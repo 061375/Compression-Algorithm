@@ -1,0 +1,148 @@
+<html>
+	<head>
+		
+	</head>
+	<body>
+		<script>
+			const URLTARGET = 'http://jeremyheminger.com'
+			/** 
+			 * Simple compression algorithm 
+			 * @version 1.0.1
+			 *
+			 * this script loops through text looking for duplicate content
+			 * The program notes the position of the start of the duplicate
+			 * the program can then build a dictionary based on these positions
+			 * finally it removes the duplaicates from the raw data
+			 *
+			 * in theory when the program is reversed it will loop the positions
+			 * adding the data back to the text
+			 *
+			 * In theory the dictionary combined with the compressed raw data should be smaller than the original
+			 *
+			 * */
+
+			// @var {Object}
+			var thedata = {
+				raw:'',
+				keys:{},
+				found:{},
+				compressed:''
+			} 
+
+			// run compression
+			compress()
+
+			/** 
+			 * gets the text data in this case from a website URL
+			 * @returns {Void}
+			 * */
+			function compress() {
+
+				fetch("scrape.php", 
+				{
+					mode:'no-cors',
+					method: 'POST',
+					headers: {
+					    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
+					},
+					body: 'url=' + URLTARGET
+				})
+				.then(function(response) {
+					return response.text()
+				})
+				.then(function(text) {
+					thedata.raw = text
+					runcompress()
+				})
+
+			}
+			/** 
+			 * actually compresses the data
+			 * */
+			function runcompress() {
+				// @let {Array} - split the data up by spaces
+				// 				  	I could compressit using DOM nodes which would be easier actuall and maybe more accurate however
+				//					I don't want to assume this is HTML
+				let s = thedata.raw.split(' ')
+				// loop the data
+				for(let i = 0; i<s.length; i++) {
+					if(s[i].length > 1 && s[i] !== '...') {
+						// we need to count how many times we see this content
+						if(undefined === thedata.keys[s[i]]) {
+							thedata.keys[s[i]] = 1;
+						}else{
+							thedata.keys[s[i]]++;
+						}
+					}
+				}
+				// loop our initial dictionary
+				for(let key in thedata.keys) {
+					if(thedata.keys.hasOwnProperty(key)) {
+						// if there isn't more than one verison of this why compresss it
+						if(thedata.keys[key] > 1) {
+							let t = getIndicesOf(key,thedata.raw,true)
+							if(undefined === thedata.found[key]) {
+								thedata.found[key] = []
+							}
+							thedata.found[key].push(t)
+						}
+					}
+				}
+				//console.log(thedata.found);
+				// strip the key data from the raw data
+				thedata.compressed = thedata.raw;
+				for(let key in thedata.found) {
+					if(thedata.found.hasOwnProperty(key)) {
+						let check = thedata.compressed.replaceAll(key,'')
+						if(check)
+							thedata.compressed = check
+					}
+				}
+				console.log('The RAW data length: ',thedata.raw.length);
+				console.log('The COMPRESSED data length: ',thedata.compressed.length);
+				console.log('The length of the DICTIONARY: ',JSON.stringify(thedata.found).length);
+			}
+			/** 
+			 * finds multiple instances of a string within a string and adds the result to an array
+			 * https://stackoverflow.com/questions/3410464/how-to-find-indices-of-all-occurrences-of-one-string-in-another-in-javascript
+			 * @param {String} needle
+			 * @param {String} haystack
+			 * @param {Boolean}
+			 * @returns {Array}
+			 * */
+			function getIndicesOf(searchStr, str, caseSensitive) {
+			    var searchStrLen = searchStr.length;
+			    if (searchStrLen == 0) {
+			        return [];
+			    }
+			    var startIndex = 0, index, indices = [];
+			    if (!caseSensitive) {
+			        str = str.toLowerCase();
+			        searchStr = searchStr.toLowerCase();
+			    }
+			    while ((index = str.indexOf(searchStr, startIndex)) > -1) {
+			        indices.push(index);
+			        startIndex = index + searchStrLen;
+			    }
+			    return indices;
+			}
+			/** 
+			 * replace multiple instances of a string
+			 * @param {String} haystack
+			 * @param {String} needle
+			 * @returns {String}
+			 * */
+			String.prototype.replaceAll = function(search, replacement) {
+			    var target = this
+			    var regex
+			    try {
+			    	regex = RegExp(search, 'g');
+			    } catch(e) {
+			    	console.log('error',regex,search,target);
+			    	return false;
+			    }
+			    return target.replace(regex, replacement);
+			};
+		</script>
+	</body>
+</html>
