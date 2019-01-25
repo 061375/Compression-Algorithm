@@ -98,9 +98,14 @@
 							thedata.compressed = check
 					}
 				}
+				let out = {
+					a:thedata.compressed,
+					b:thedata.found
+				}
 				console.log('The RAW data length: ',thedata.raw.length);
 				console.log('The COMPRESSED data length: ',thedata.compressed.length);
 				console.log('The length of the DICTIONARY: ',JSON.stringify(thedata.found).length);
+				console.log('The final output: ',JSON.stringify(out).length);
 			}
 			/** 
 			 * finds multiple instances of a string within a string and adds the result to an array
