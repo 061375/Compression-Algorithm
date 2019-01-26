@@ -3,8 +3,141 @@
 		
 	</head>
 	<body>
-		<script>
-			const URLTARGET = 'http://jeremyheminger.com'
+		<script charset="UTF-16">
+			const s1 = '\u00E9';
+			const s2 = '\u00A1';
+			const s3 = '\u00A2';
+			const s4 = '\u00A3';
+			const s5 = '\u00A4';
+			const s6 = '\u00A5';
+			const s7 = '\u00A6';
+			const s8 = '\u00A7';
+			const s9 = '\u00A8';
+			const s10 = '\u00A9';
+			const s11 =  '\u00B0';
+			const s12 =  '\u00B1';
+			const s13 =  '\u00B2';
+			const s14 =  '\u00B3';
+			const s15 =  '\u00B4';
+			const s16 =  '\u00B5';
+			const s17 =  '\u00B6';
+			const s18 =  '\u00B7';
+			const s19 =  '\u00B8';
+			const s20 =  '\u00B9';
+			const URLTARGET = 'http://jeremyheminger.com';
+			// the delimitter denoting that the following number is the square of its value
+			const SQUAREDELIM = "#";
+			// JSON uses the UNICODE character set 
+			const CYPHER = {
+				"00":"",
+				"01":"",
+				"02":"",
+				"03":"",
+				"04":"",
+				"05":"",
+				"06":"",
+				"07":"",
+				"08":"",
+				"09":"",
+				"10":"a",
+				"11":"b",
+				"12":"c",
+				"13":"d",
+				"14":"e",
+				"15":"f",
+				"16":"g",
+				"17":"h",
+				"18":"i",
+				"19":"j",
+				"20":"k",
+				"21":"l",
+				"22":"m",
+				"23":"n",
+				"24":"o",
+				"25":"p",
+				"26":"q",
+				"27":"r",
+				"28":"s",
+				"29":"t",
+				"30":"u",
+				"31":"v",
+				"32":"w",
+				"33":"x",
+				"34":"y",
+				"35":"z",
+				"36":"A",
+				"37":"B",
+				"38":"C",
+				"39":"D",
+				"40":"E",
+				"41":"F",
+				"42":"G",
+				"43":"H",
+				"44":"I",
+				"45":"J",
+				"46":"K",
+				"47":"L",
+				"48":"M",
+				"49":"N",
+				"50":"O",
+				"51":"P",
+				"52":"Q",
+				"53":"R",
+				"54":"S",
+				"55":"z",
+				"56":"U",
+				"57":"V",
+				"58":"W",
+				"59":"X",
+				"60":"Y",
+				"61":"Z",
+				"62":"!",
+				"63":"@",
+				"64":"$",
+				"65":"%",
+				"66":"'",
+				"67":"&",
+				"68":"*",
+				"69":"(",
+				"70":")",
+				"71":"-",
+				"72":"_",
+				"73":"=",
+				"74":"+",
+				"75":"[",
+				"76":"{",
+				"77":"]",
+				"78":"}",
+				"79":"~",
+				"80":";",
+				"81":":",
+				"82":"'",
+				"83":"<",
+				"84":".",
+				"85":">",
+				"86":"?",
+				"87":"`",
+				"89":s1,
+				"90":s2,
+				"91":s3,
+				"92":s4,
+				"93":s5,
+				"94":s6,
+				"95":s7,
+				"96":s8,
+				"97":s9,
+				"98":s10,
+				"99":s11
+			};
+			const HEX = {
+				"10":"A",
+				"11":"B",
+				"12":"C",
+				"13":"D",
+				"14":"E",
+				"15":"F",
+				"16":"F"
+			}
 			/** 
 			 * Simple compression algorithm 
 			 * @version 1.0.1
@@ -27,7 +160,9 @@
 				keys:{},
 				found:{},
 				compressed:''
-			} 
+			}
+			
+			
 
 			// run compression
 			compress()
@@ -60,12 +195,14 @@
 			 * actually compresses the data
 			 * */
 			function runcompress() {
+				
 				// @let {Array} - split the data up by spaces
 				// 				  	I could compressit using DOM nodes which would be easier actuall and maybe more accurate however
 				//					I don't want to assume this is HTML
 				let s = thedata.raw.split(' ')
 				// loop the data
 				for(let i = 0; i<s.length; i++) {
+						// ... is special in ECMA-6+
 					if(s[i].length > 1 && s[i] !== '...') {
 						// we need to count how many times we see this content
 						if(undefined === thedata.keys[s[i]]) {
@@ -82,9 +219,11 @@
 						if(thedata.keys[key] > 1) {
 							let t = getIndicesOf(key,thedata.raw,true)
 							if(undefined === thedata.found[key]) {
-								thedata.found[key] = []
+								//thedata.found[key] = []
 							}
-							thedata.found[key].push(t)
+							//console.log(t);
+							//thedata.found[key].push(t)
+							thedata.found[key] = t;
 						}
 					}
 				}
@@ -98,14 +237,104 @@
 							thedata.compressed = check
 					}
 				}
-				let out = {
-					a:thedata.compressed,
-					b:thedata.found
+				
+				compressDictionary2(function(){
+					console.log('The RAW data length: ',thedata.raw.length);
+					console.log('The COMPRESSED data length: ',thedata.compressed.length);
+					console.log('The length of the DICTIONARY: ',JSON.stringify(thedata.found).length);
+					
+					let out = {
+						a:thedata.compressed,
+						b:thedata.found
+					}
+					
+					console.log('The final output length ( Data and Dictionary) : ',JSON.stringify(out).length);
+					console.log('Final output: ',JSON.stringify(out));
+					console.log('All of the data: ',thedata);
+				});
+				
+				
+				
+			}
+			/**
+			 * @todo a simple cypher to compress the numbers
+			 * * */
+			function compressDictionary(callback) {
+				//console.log(thedata);
+				// if two digits less than 52 then replace with alhpa character
+				let result = '';
+				// loop keys for each set of two numbers
+				for(let key in thedata.found) {
+					if(thedata.found.hasOwnProperty(key)) {
+						//console.log(thedata.found[key].length);
+						for(let i=0; i<thedata.found[key].length; i++) {
+							let fk = '';
+							//console.log(key,i,'init fk',thedata.found[key][i].toString().length);
+							for(let j=0; j<thedata.found[key][i].toString().length; j+=2) {
+
+								let ckey = thedata.found[key][i].toString().substring(j,j+2);
+								
+								if (undefined === CYPHER[ckey]) {
+									//add as is
+									fk = fk + ckey;
+								}else{
+									// add
+									fk = fk + CYPHER[ckey];
+								}
+								
+							}
+							thedata.found[key][i] = fk;
+						}
+					}
 				}
-				console.log('The RAW data length: ',thedata.raw.length);
-				console.log('The COMPRESSED data length: ',thedata.compressed.length);
-				console.log('The length of the DICTIONARY: ',JSON.stringify(thedata.found).length);
-				console.log('The final output: ',JSON.stringify(out).length);
+				if (typeof callback === 'function') {
+					callback();
+				}
+			}
+			/**
+			 * @todo a simple cypher to compress the numbers
+			 * * */
+			function compressDictionary2(callback) {
+				//console.log(thedata);
+				// if two digits less than 52 then replace with alpha character
+				let result = '';
+				// loop keys for each set of two numbers
+				for(let key in thedata.found) {
+					if(thedata.found.hasOwnProperty(key)) {
+						let fk = '';
+						for(let i=0; i<thedata.found[key].length; i++) {
+							let fktemp = "|";
+							let cloop = thedata.found[key][i];
+							let bsqr = false;
+							if (isInteger(Math.sqrt(cloop))) {
+								fktemp += SQUAREDELIM;
+								cloop = Math.sqrt(cloop);
+								bsqr = true;
+							}
+							for(let j=0; j<cloop.toString().length; j+=2) {
+								let ckey = cloop.toString().substring(j,j+2);
+								
+								if (undefined === CYPHER[ckey]) {
+									fktemp = fktemp + ckey;
+									//add as is
+									//fk = fk + ckey;
+								}else{
+									// add
+									fktemp = fktemp + CYPHER[ckey];
+									//fk = fk + CYPHER[ckey];
+								}
+							}
+							
+							
+							fk = fk + fktemp;
+							thedata.found[key][i] = fktemp;
+						}
+						thedata.found[key] = fk;
+					}
+				}
+				if (typeof callback === 'function') {
+					callback();
+				}
 			}
 			/** 
 			 * finds multiple instances of a string within a string and adds the result to an array
@@ -131,6 +360,16 @@
 			    }
 			    return indices;
 			}
+			/**
+			 * @returns {String}
+			 * * */
+			Number.prototype.toHex = function() {
+				hexString = this.toString(16);
+				if (hexString.length % 2) {
+				    hexString = '0' + hexString;
+				}
+				return hexString
+			}
 			/** 
 			 * replace multiple instances of a string
 			 * @param {String} haystack
@@ -148,6 +387,16 @@
 			    }
 			    return target.replace(regex, replacement);
 			};
+			/**
+			 * @param {Number}
+			 * @returns {Boolean}
+			 * */
+			function isEven(n) {
+				return n % 2 == 0;
+			}
+			function isInteger(n) {
+				return n === +n && n === (n|0);
+			}
 		</script>
 	</body>
 </html>
