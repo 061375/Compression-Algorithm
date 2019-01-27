@@ -4,12 +4,31 @@
 	</head>
 	<body>
 		<script charset="UTF-16">
+			/** 
+			 * Simple compression algorithm 
+			 * @version 1.0.3
+			 *
+			 * this script loops through text looking for duplicate content
+			 * The program notes the position of the start of the duplicate
+			 * the program can then build a dictionary based on these positions
+			 * finally it removes the duplaicates from the raw data
+			 *
+			 * in theory when the program is reversed it will loop the positions
+			 * adding the data back to the text
+			 *
+			 * In theory the dictionary combined with the compressed raw data should be smaller than the original
+			 *
+			 * @todo - currently the dictionar is just not compressing enough
+			 * 	   but it's getting closer
+			 * */
+			
 			//
-			const URLTARGET = 'http://www.jeremyheminger.com';
+			const URLTARGET = 'http://192.168.1.173/text.html';
 			
 			
 			
 			// declare some UTF-16 characters
+			// JSON uses the UNICODE-16 character set
 			const s1 = '\u00E9';
 			const s2 = '\u00A1';
 			const s3 = '\u00A2';
@@ -32,14 +51,14 @@
 			const s20 =  '\u00B9';
 			const s21 =  '\u00BB';
 			
-			// delimmiters
+			// delimmiters for various
 			const MAIN = '|';
 			const TENDELIM = '\u00C1';// the delimitter denoting that the following number is the square of its value
 			const HUNDREDDELIM = '\u00C2';
 			const THOUSANDDELIM = '\u00C3';
 			const SQUAREDELIM = "#";
 			
-			// JSON uses the UNICODE character set 
+			// @const {Object}
 			const CYPHER = {
 				"00":s12,
 				"01":s13,
@@ -141,30 +160,6 @@
 				"98":s10,
 				"99":s11
 			};
-			const HEX = {
-				"10":"A",
-				"11":"B",
-				"12":"C",
-				"13":"D",
-				"14":"E",
-				"15":"F",
-				"16":"F"
-			}
-			/** 
-			 * Simple compression algorithm 
-			 * @version 1.0.1
-			 *
-			 * this script loops through text looking for duplicate content
-			 * The program notes the position of the start of the duplicate
-			 * the program can then build a dictionary based on these positions
-			 * finally it removes the duplaicates from the raw data
-			 *
-			 * in theory when the program is reversed it will loop the positions
-			 * adding the data back to the text
-			 *
-			 * In theory the dictionary combined with the compressed raw data should be smaller than the original
-			 *
-			 * */
 
 			// @var {Object}
 			var thedata = {
@@ -175,7 +170,6 @@
 			}
 			
 			
-
 			// run compression
 			compress()
 
