@@ -4,6 +4,12 @@
 	</head>
 	<body>
 		<script charset="UTF-16">
+			//
+			const URLTARGET = 'http://www.jeremyheminger.com';
+			
+			
+			
+			// declare some UTF-16 characters
 			const s1 = '\u00E9';
 			const s2 = '\u00A1';
 			const s3 = '\u00A2';
@@ -24,21 +30,27 @@
 			const s18 =  '\u00B7';
 			const s19 =  '\u00B8';
 			const s20 =  '\u00B9';
-			const URLTARGET = 'http://jeremyheminger.com';
-			// the delimitter denoting that the following number is the square of its value
+			const s21 =  '\u00BB';
+			
+			// delimmiters
+			const MAIN = '|';
+			const TENDELIM = '\u00C1';// the delimitter denoting that the following number is the square of its value
+			const HUNDREDDELIM = '\u00C2';
+			const THOUSANDDELIM = '\u00C3';
 			const SQUAREDELIM = "#";
+			
 			// JSON uses the UNICODE character set 
 			const CYPHER = {
-				"00":"",
-				"01":"",
-				"02":"",
-				"03":"",
-				"04":"",
-				"05":"",
-				"06":"",
-				"07":"",
-				"08":"",
-				"09":"",
+				"00":s12,
+				"01":s13,
+				"02":s14,
+				"03":s15,
+				"04":s16,
+				"05":s17,
+				"06":s18,
+				"07":s19,
+				"08":s20,
+				"09":s21,
 				"10":"a",
 				"11":"b",
 				"12":"c",
@@ -218,16 +230,10 @@
 						// if there isn't more than one verison of this why compresss it
 						if(thedata.keys[key] > 1) {
 							let t = getIndicesOf(key,thedata.raw,true)
-							if(undefined === thedata.found[key]) {
-								//thedata.found[key] = []
-							}
-							//console.log(t);
-							//thedata.found[key].push(t)
 							thedata.found[key] = t;
 						}
 					}
 				}
-				//console.log(thedata.found);
 				// strip the key data from the raw data
 				thedata.compressed = thedata.raw;
 				for(let key in thedata.found) {
@@ -238,7 +244,7 @@
 					}
 				}
 				
-				compressDictionary2(function(){
+				compressDictionary(function(){
 					console.log('The RAW data length: ',thedata.raw.length);
 					console.log('The COMPRESSED data length: ',thedata.compressed.length);
 					console.log('The length of the DICTIONARY: ',JSON.stringify(thedata.found).length);
@@ -248,7 +254,7 @@
 						b:thedata.found
 					}
 					
-					console.log('The final output length ( Data and Dictionary) : ',JSON.stringify(out).length);
+					console.log('The final output length ( Data and Dictionary ): ',JSON.stringify(out).length);
 					console.log('Final output: ',JSON.stringify(out));
 					console.log('All of the data: ',thedata);
 				});
@@ -257,45 +263,10 @@
 				
 			}
 			/**
-			 * @todo a simple cypher to compress the numbers
-			 * * */
+			 *
+			 * @param {Function}
+			 * */
 			function compressDictionary(callback) {
-				//console.log(thedata);
-				// if two digits less than 52 then replace with alhpa character
-				let result = '';
-				// loop keys for each set of two numbers
-				for(let key in thedata.found) {
-					if(thedata.found.hasOwnProperty(key)) {
-						//console.log(thedata.found[key].length);
-						for(let i=0; i<thedata.found[key].length; i++) {
-							let fk = '';
-							//console.log(key,i,'init fk',thedata.found[key][i].toString().length);
-							for(let j=0; j<thedata.found[key][i].toString().length; j+=2) {
-
-								let ckey = thedata.found[key][i].toString().substring(j,j+2);
-								
-								if (undefined === CYPHER[ckey]) {
-									//add as is
-									fk = fk + ckey;
-								}else{
-									// add
-									fk = fk + CYPHER[ckey];
-								}
-								
-							}
-							thedata.found[key][i] = fk;
-						}
-					}
-				}
-				if (typeof callback === 'function') {
-					callback();
-				}
-			}
-			/**
-			 * @todo a simple cypher to compress the numbers
-			 * * */
-			function compressDictionary2(callback) {
-				//console.log(thedata);
 				// if two digits less than 52 then replace with alpha character
 				let result = '';
 				// loop keys for each set of two numbers
@@ -303,29 +274,42 @@
 					if(thedata.found.hasOwnProperty(key)) {
 						let fk = '';
 						for(let i=0; i<thedata.found[key].length; i++) {
-							let fktemp = "|";
+							let fktemp = "";
 							let cloop = thedata.found[key][i];
 							let bsqr = false;
+							let bten = false;
 							if (isInteger(Math.sqrt(cloop))) {
 								fktemp += SQUAREDELIM;
 								cloop = Math.sqrt(cloop);
 								bsqr = true;
+							}else if(isInteger(cloop / 10) && isEven((cloop / 10).toString().length)){
+								fktemp += TENDELIM;
+								cloop = cloop / 10;
+								
+							}else if(isInteger(cloop / 100) && isEven((cloop / 100).toString().length)){
+								fktemp += HUNDREDDELIM;
+								cloop = cloop / 100;
+								
+							}else if(isInteger(cloop / 1000) && isEven((cloop / 1000).toString().length)){
+								fktemp += THOUSANDDELIM;
+								cloop = cloop / 1000;
+								
+							}else{
+								// last ELSE add MAIN delimitter
+								fktemp = MAIN;
 							}
 							for(let j=0; j<cloop.toString().length; j+=2) {
 								let ckey = cloop.toString().substring(j,j+2);
 								
 								if (undefined === CYPHER[ckey]) {
 									fktemp = fktemp + ckey;
-									//add as is
-									//fk = fk + ckey;
 								}else{
 									// add
 									fktemp = fktemp + CYPHER[ckey];
-									//fk = fk + CYPHER[ckey];
 								}
 							}
 							
-							
+						
 							fk = fk + fktemp;
 							thedata.found[key][i] = fktemp;
 						}
@@ -394,6 +378,10 @@
 			function isEven(n) {
 				return n % 2 == 0;
 			}
+			/**
+			 * @param {Number}
+			 * @returns {Boolean}
+			 * */
 			function isInteger(n) {
 				return n === +n && n === (n|0);
 			}
