@@ -1,5 +1,5 @@
 			
-			const URLTARGET = 'text.html';
+			const URLTARGET = 'http://192.168.1.77';
 			
 			
 			
