@@ -23,7 +23,7 @@
 			 * */
 			
 			//
-			const URLTARGET = 'http://192.168.1.173/text.html';
+			const URLTARGET = 'small.html';
 			
 			
 			
@@ -50,14 +50,23 @@
 			const s19 =  '\u00B8';
 			const s20 =  '\u00B9';
 			const s21 =  '\u00BB';
-			
+			const s22 =  '\u00C0';
+			const s23 =  '\u00C1';
+			const s24 =  '\u00C2';
+			const s25 =  '\u00C3';
+			const s26 =  '\u00C4';
+			const s27 =  '\u00C5';
+
 			// delimmiters for various
-			const MAIN = '|';
-			const TENDELIM = '\u00C1';// the delimitter denoting that the following number is the square of its value
-			const HUNDREDDELIM = '\u00C2';
-			const THOUSANDDELIM = '\u00C3';
 			const SQUAREDELIM = "#";
-			
+			const MAIN = '|';
+			const TENDELIM = s22;// the delimitter denoting that the following number is the square of its value
+			const HUNDREDDELIM = s23;
+			const THOUSANDDELIM = s24;
+			const DICTDELIM = s25;
+			const DICTWORDDELIM = s26;
+			const DICTKEYVALDELIM = s27;
+
 			// @const {Object}
 			const CYPHER = {
 				"00":s12,
@@ -166,7 +175,8 @@
 				raw:'',
 				keys:{},
 				found:{},
-				compressed:''
+				compressed:'',
+				out:''
 			}
 			
 			
@@ -198,10 +208,53 @@
 
 			}
 			/** 
-			 * actually compresses the data
+			 * 
 			 * */
 			function runcompress() {
 				
+				createDictionary2(function(){
+					compressDictionary(function(){
+						console.log('The RAW data length: ',thedata.raw.length);
+						console.log('The COMPRESSED data length: ',thedata.compressed.length);
+						console.log('The length of the DICTIONARY: ',JSON.stringify(thedata.found).length);
+						
+						let out = {
+							a:thedata.compressed,
+							b:thedata.found
+						}
+						
+						console.log('The final output length ( Data and Dictionary ) as JSON: ',JSON.stringify(out).length);
+						//console.log('Final output as JSON: ',JSON.stringify(out));
+						//console.log('All of the data: ',thedata);
+						
+						buildOut(function(){
+							console.log('The final output length ( Data and Dictionary ): ',thedata.out.length);
+							console.log('All the data as a string: ',thedata.out);
+						});
+					});
+				});
+				
+			}
+			/** 
+			 * 
+			 * @param {Function}
+			 * */
+			function buildOut(callback) {
+				let out = thedata.compressed + DICTDELIM;
+				for(let key in thedata.found) {
+					if(thedata.found.hasOwnProperty(key)) {
+						out += key+DICTKEYVALDELIM+thedata.found[key]+DICTWORDDELIM;
+					}
+				}
+				thedata.out = out;
+				if(typeof callback === 'function')
+					callback();
+			}
+			/** 
+			 * 
+			 * @param {Function}
+			 * */
+			function createDictionary(callback) {
 				// @let {Array} - split the data up by spaces
 				// 				  	I could compressit using DOM nodes which would be easier actuall and maybe more accurate however
 				//					I don't want to assume this is HTML
@@ -237,24 +290,60 @@
 							thedata.compressed = check
 					}
 				}
+
+				if(typeof callback === 'function')
+					callback();
+			}
+			/** 
+			 * 
+			 * @param {Function}
+			 * */
+			function createDictionary2(callback) {
 				
-				compressDictionary(function(){
-					console.log('The RAW data length: ',thedata.raw.length);
-					console.log('The COMPRESSED data length: ',thedata.compressed.length);
-					console.log('The length of the DICTIONARY: ',JSON.stringify(thedata.found).length);
-					
-					let out = {
-						a:thedata.compressed,
-						b:thedata.found
+				let possible = [],
+					found = {},
+					current = '',
+					cpossible = '';
+
+				let l = thedata.raw.length;
+				for(let i=0; i<l; i++) {
+					let n = thedata.raw.substring(i,i+1);
+					if(n == ' ') {
+						possible.push(current);
+						current = '';
+					}else{
+						current = current + n;
+						if(possible.indexOf(current) > -1 && current.length > 1) {
+							if(undefined === found[current]) {
+								found[current] = 2;
+							}else{
+								found[current]++;
+							}
+						}
 					}
-					
-					console.log('The final output length ( Data and Dictionary ): ',JSON.stringify(out).length);
-					console.log('Final output: ',JSON.stringify(out));
-					console.log('All of the data: ',thedata);
-				});
-				
-				
-				
+				}
+				thedata.keys = found;
+				// loop our initial dictionary
+				for(let key in thedata.keys) {
+					if(thedata.keys.hasOwnProperty(key)) {
+						// if there isn't more than one verison of this why compresss it
+						if(thedata.keys[key] > 1) {
+							let t = getIndicesOf(key,thedata.raw,true)
+							thedata.found[key] = t;
+						}
+					}
+				}
+				// strip the key data from the raw data
+				thedata.compressed = thedata.raw;
+				for(let key in thedata.found) {
+					if(thedata.found.hasOwnProperty(key)) {
+						let check = thedata.compressed.replaceAll(key,'')
+						if(check)
+							thedata.compressed = check
+					}
+				}
+				if(typeof callback === 'function')
+					callback();
 			}
 			/**
 			 *
@@ -310,9 +399,9 @@
 						thedata.found[key] = fk;
 					}
 				}
-				if (typeof callback === 'function') {
+				if (typeof callback === 'function') 
 					callback();
-				}
+				
 			}
 			/** 
 			 * finds multiple instances of a string within a string and adds the result to an array
