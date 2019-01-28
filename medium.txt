@@ -1,0 +1,11 @@
+This is a sentence. This is a different sentence. This is yet another sentence. This is a sentence.
+I have a dog and a cat. They are both animals. My cat is not a dog and the dog is not a cat.
+This is a test of compression of data using a dictionary of the content.
+
+This is a sentence. This is a different sentence. This is yet another sentence. This is a sentence.
+I have a dog and a cat. They are both animals. My cat is not a dog and the dog is not a cat.
+This is a test of compression of data using a dictionary of the content.
+
+This is a sentence. This is a different sentence. This is yet another sentence. This is a sentence.
+I have a dog and a cat. They are both animals. My cat is not a dog and the dog is not a cat.
+This is a test of compression of data using a dictionary of the content.

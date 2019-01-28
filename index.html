@@ -3,7 +3,9 @@
 		
 	</head>
 	<body>
-		<script charset="UTF-16">
+		<script src="js/helpers.js"></script>
+		<script src="js/dictionary.js"></script>
+		<script>
 			/** 
 			 * Simple compression algorithm 
 			 * @version 1.0.3
@@ -23,7 +25,7 @@
 			 * */
 			
 			//
-			const URLTARGET = 'small.html';
+			const URLTARGET = 'text.html';
 			
 			
 			
@@ -56,6 +58,10 @@
 			const s25 =  '\u00C3';
 			const s26 =  '\u00C4';
 			const s27 =  '\u00C5';
+			const s28 =  '\u00C6';
+			const s29 =  '\u00C7';
+			const s30 =  '\u00C8';
+			const s31 =  '\u00C9';
 
 			// delimmiters for various
 			const SQUAREDELIM = "#";
@@ -66,6 +72,8 @@
 			const DICTDELIM = s25;
 			const DICTWORDDELIM = s26;
 			const DICTKEYVALDELIM = s27;
+			const DICTSPACEDELIM = s30;
+			const DICTNOLONGERLOOKING = s31;
 
 			// @const {Object}
 			const CYPHER = {
@@ -157,6 +165,7 @@
 				"85":">",
 				"86":"?",
 				"87":"`",
+				"88":s28,
 				"89":s1,
 				"90":s2,
 				"91":s3,
@@ -211,29 +220,32 @@
 			 * 
 			 * */
 			function runcompress() {
+				Dictionary.first(thedata.raw,function(re) {
 				
-				createDictionary2(function(){
-					compressDictionary(function(){
-						console.log('The RAW data length: ',thedata.raw.length);
-						console.log('The COMPRESSED data length: ',thedata.compressed.length);
-						console.log('The length of the DICTIONARY: ',JSON.stringify(thedata.found).length);
-						
-						let out = {
-							a:thedata.compressed,
-							b:thedata.found
-						}
-						
-						console.log('The final output length ( Data and Dictionary ) as JSON: ',JSON.stringify(out).length);
-						//console.log('Final output as JSON: ',JSON.stringify(out));
-						//console.log('All of the data: ',thedata);
-						
-						buildOut(function(){
-							console.log('The final output length ( Data and Dictionary ): ',thedata.out.length);
-							console.log('All the data as a string: ',thedata.out);
+					thedata = re;
+					//Dictionary.second(thedata.raw,function(re){
+						thedata = re;
+						Dictionary.compress(function(){
+							//Dictionary.third(thedata,function(re) {
+								//thedata = re;
+								console.log('The RAW data length: ',thedata.raw.length);
+								console.log('The COMPRESSED data length: ',thedata.compressed.length);
+								console.log('The length of the DICTIONARY: ',JSON.stringify(thedata.found).length);
+								
+								let out = {
+									a:thedata.compressed,
+									b:thedata.found
+								}
+								
+								buildOut(function(){
+									console.log('The final output length ( Data and Dictionary ): ',thedata.out.length);
+									console.log('All the data as a string: ',thedata.out);
+								});
+							//});
 						});
-					});
+					//});
+					
 				});
-				
 			}
 			/** 
 			 * 
@@ -250,224 +262,8 @@
 				if(typeof callback === 'function')
 					callback();
 			}
-			/** 
-			 * 
-			 * @param {Function}
-			 * */
-			function createDictionary(callback) {
-				// @let {Array} - split the data up by spaces
-				// 				  	I could compressit using DOM nodes which would be easier actuall and maybe more accurate however
-				//					I don't want to assume this is HTML
-				let s = thedata.raw.split(' ')
-				// loop the data
-				for(let i = 0; i<s.length; i++) {
-						// ... is special in ECMA-6+
-					if(s[i].length > 1 && s[i] !== '...') {
-						// we need to count how many times we see this content
-						if(undefined === thedata.keys[s[i]]) {
-							thedata.keys[s[i]] = 1;
-						}else{
-							thedata.keys[s[i]]++;
-						}
-					}
-				}
-				// loop our initial dictionary
-				for(let key in thedata.keys) {
-					if(thedata.keys.hasOwnProperty(key)) {
-						// if there isn't more than one verison of this why compresss it
-						if(thedata.keys[key] > 1) {
-							let t = getIndicesOf(key,thedata.raw,true)
-							thedata.found[key] = t;
-						}
-					}
-				}
-				// strip the key data from the raw data
-				thedata.compressed = thedata.raw;
-				for(let key in thedata.found) {
-					if(thedata.found.hasOwnProperty(key)) {
-						let check = thedata.compressed.replaceAll(key,'')
-						if(check)
-							thedata.compressed = check
-					}
-				}
-
-				if(typeof callback === 'function')
-					callback();
-			}
-			/** 
-			 * 
-			 * @param {Function}
-			 * */
-			function createDictionary2(callback) {
-				
-				let possible = [],
-					found = {},
-					current = '',
-					cpossible = '';
-
-				let l = thedata.raw.length;
-				for(let i=0; i<l; i++) {
-					let n = thedata.raw.substring(i,i+1);
-					if(n == ' ') {
-						possible.push(current);
-						current = '';
-					}else{
-						current = current + n;
-						if(possible.indexOf(current) > -1 && current.length > 1) {
-							if(undefined === found[current]) {
-								found[current] = 2;
-							}else{
-								found[current]++;
-							}
-						}
-					}
-				}
-				thedata.keys = found;
-				// loop our initial dictionary
-				for(let key in thedata.keys) {
-					if(thedata.keys.hasOwnProperty(key)) {
-						// if there isn't more than one verison of this why compresss it
-						if(thedata.keys[key] > 1) {
-							let t = getIndicesOf(key,thedata.raw,true)
-							thedata.found[key] = t;
-						}
-					}
-				}
-				// strip the key data from the raw data
-				thedata.compressed = thedata.raw;
-				for(let key in thedata.found) {
-					if(thedata.found.hasOwnProperty(key)) {
-						let check = thedata.compressed.replaceAll(key,'')
-						if(check)
-							thedata.compressed = check
-					}
-				}
-				if(typeof callback === 'function')
-					callback();
-			}
-			/**
-			 *
-			 * @param {Function}
-			 * */
-			function compressDictionary(callback) {
-				// if two digits less than 52 then replace with alpha character
-				let result = '';
-				// loop keys for each set of two numbers
-				for(let key in thedata.found) {
-					if(thedata.found.hasOwnProperty(key)) {
-						let fk = '';
-						for(let i=0; i<thedata.found[key].length; i++) {
-							let fktemp = "";
-							let cloop = thedata.found[key][i];
-							let bsqr = false;
-							let bten = false;
-							if (isInteger(Math.sqrt(cloop))) {
-								fktemp += SQUAREDELIM;
-								cloop = Math.sqrt(cloop);
-								bsqr = true;
-							}else if(isInteger(cloop / 10) && isEven((cloop / 10).toString().length)){
-								fktemp += TENDELIM;
-								cloop = cloop / 10;
-								
-							}else if(isInteger(cloop / 100) && isEven((cloop / 100).toString().length)){
-								fktemp += HUNDREDDELIM;
-								cloop = cloop / 100;
-								
-							}else if(isInteger(cloop / 1000) && isEven((cloop / 1000).toString().length)){
-								fktemp += THOUSANDDELIM;
-								cloop = cloop / 1000;
-								
-							}else{
-								// last ELSE add MAIN delimitter
-								fktemp = MAIN;
-							}
-							for(let j=0; j<cloop.toString().length; j+=2) {
-								let ckey = cloop.toString().substring(j,j+2);
-								
-								if (undefined === CYPHER[ckey]) {
-									fktemp = fktemp + ckey;
-								}else{
-									// add
-									fktemp = fktemp + CYPHER[ckey];
-								}
-							}
-							
-						
-							fk = fk + fktemp;
-							thedata.found[key][i] = fktemp;
-						}
-						thedata.found[key] = fk;
-					}
-				}
-				if (typeof callback === 'function') 
-					callback();
-				
-			}
-			/** 
-			 * finds multiple instances of a string within a string and adds the result to an array
-			 * https://stackoverflow.com/questions/3410464/how-to-find-indices-of-all-occurrences-of-one-string-in-another-in-javascript
-			 * @param {String} needle
-			 * @param {String} haystack
-			 * @param {Boolean}
-			 * @returns {Array}
-			 * */
-			function getIndicesOf(searchStr, str, caseSensitive) {
-			    var searchStrLen = searchStr.length;
-			    if (searchStrLen == 0) {
-			        return [];
-			    }
-			    var startIndex = 0, index, indices = [];
-			    if (!caseSensitive) {
-			        str = str.toLowerCase();
-			        searchStr = searchStr.toLowerCase();
-			    }
-			    while ((index = str.indexOf(searchStr, startIndex)) > -1) {
-			        indices.push(index);
-			        startIndex = index + searchStrLen;
-			    }
-			    return indices;
-			}
-			/**
-			 * @returns {String}
-			 * * */
-			Number.prototype.toHex = function() {
-				hexString = this.toString(16);
-				if (hexString.length % 2) {
-				    hexString = '0' + hexString;
-				}
-				return hexString
-			}
-			/** 
-			 * replace multiple instances of a string
-			 * @param {String} haystack
-			 * @param {String} needle
-			 * @returns {String}
-			 * */
-			String.prototype.replaceAll = function(search, replacement) {
-			    var target = this
-			    var regex
-			    try {
-			    	regex = RegExp(search, 'g');
-			    } catch(e) {
-			    	console.log('error',regex,search,target);
-			    	return false;
-			    }
-			    return target.replace(regex, replacement);
-			};
-			/**
-			 * @param {Number}
-			 * @returns {Boolean}
-			 * */
-			function isEven(n) {
-				return n % 2 == 0;
-			}
-			/**
-			 * @param {Number}
-			 * @returns {Boolean}
-			 * */
-			function isInteger(n) {
-				return n === +n && n === (n|0);
-			}
+			
+			
 		</script>
 	</body>
 </html>
