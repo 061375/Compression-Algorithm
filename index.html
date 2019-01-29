@@ -9,10 +9,11 @@
 		<script src="js/ajax.js"></script>
 		<script src="js/compress.js"></script>
 		<script src="js/decompress.js"></script>
+		<script src="js/fiddle.js"></script>
 		<script>
 			/** 
 			 * Simple compression algorithm 
-			 * @version 2.0.1
+			 * @version 2.0.2
 			 *
 			 * this script loops through text looking for duplicate content
 			 * The program notes the position of the start of the duplicate
@@ -32,7 +33,9 @@
 			
 			
 			// run compression
-			compress()
+			compress('medium.txt')
+
+			//decompress(thedata.out)
 
 		</script>
 	</body>

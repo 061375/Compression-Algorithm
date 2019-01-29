@@ -1,3 +1,6 @@
+function decompress(data) {
+    let c = Decompress.getDictionary(data);
+}
 /**
  *
  * */

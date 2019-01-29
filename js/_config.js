@@ -1,5 +1,5 @@
-			
-			const URLTARGET = 'small.txt';
+
+			const URLTARGET = 'medium.txt';
 			
 			
 			
