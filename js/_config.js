@@ -1,5 +1,5 @@
 			
-			const URLTARGET = 'http://192.168.1.77';
+			const URLTARGET = 'small.txt';
 			
 			
 			
@@ -15,27 +15,27 @@
 			const s8 = '\u00A7';
 			const s9 = '\u00A8';
 			const s10 = '\u00A9';
-			const s11 =  '\u00B0';
-			const s12 =  '\u00B1';
-			const s13 =  '\u00B2';
-			const s14 =  '\u00B3';
-			const s15 =  '\u00B4';
-			const s16 =  '\u00B5';
-			const s17 =  '\u00B6';
-			const s18 =  '\u00B7';
-			const s19 =  '\u00B8';
-			const s20 =  '\u00B9';
-			const s21 =  '\u00BB';
-			const s22 =  '\u00C0';
-			const s23 =  '\u00C1';
-			const s24 =  '\u00C2';
-			const s25 =  '\u00C3';
-			const s26 =  '\u00C4';
-			const s27 =  '\u00C5';
-			const s28 =  '\u00C6';
-			const s29 =  '\u00C7';
-			const s30 =  '\u00C8';
-			const s31 =  '\u00C9';
+			const s11 = '\u00B0';
+			const s12 = '\u00B1';
+			const s13 = '\u00B2';
+			const s14 = '\u00B3';
+			const s15 = '\u00B4';
+			const s16 = '\u00B5';
+			const s17 = '\u00B6';
+			const s18 = '\u00B7';
+			const s19 = '\u00B8';
+			const s20 = '\u00B9';
+			const s21 = '\u00BB';
+			const s22 = '\u00C0';
+			const s23 = '\u00C1';
+			const s24 = '\u00C2';
+			const s25 = '\u00C3';
+			const s26 = '\u00C4';
+			const s27 = '\u00C5';
+			const s28 = '\u00C6';
+			const s29 = '\u00C7';
+			const s30 = '\u00C8';
+			const s31 = '\u00C9';
 
 			// delimmiters for various
 			const SQUAREDELIM = "#";

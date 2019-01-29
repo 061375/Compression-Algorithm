@@ -58,13 +58,7 @@ class Helpers {
 			re += DICTNOLONGERLOOKING;
 		
 		let _re = str.replace(new RegExp(Helpers.escapeRegExp(find.trim()), 'g'),re);
-		/*
-		console.log('_________________');
-		console.log(find);
-		console.log(re);
-		console.log(_re);
-		console.log('##################');
-		*/
+
 		return _re;
 	}
 	/** 
@@ -106,7 +100,7 @@ class Helpers {
 		return n === +n && n === (n|0);
 	}
 	static escapeRegExp(str) {
-    	return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+		return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
 	}
 }
 

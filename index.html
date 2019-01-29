@@ -6,10 +6,13 @@
 		<script src="js/_config.js"></script>
 		<script src="js/helpers.js"></script>
 		<script src="js/dictionary.js"></script>
+		<script src="js/ajax.js"></script>
+		<script src="js/compress.js"></script>
+		<script src="js/decompress.js"></script>
 		<script>
 			/** 
 			 * Simple compression algorithm 
-			 * @version 1.0.3
+			 * @version 2.0.1
 			 *
 			 * this script loops through text looking for duplicate content
 			 * The program notes the position of the start of the duplicate
@@ -21,7 +24,7 @@
 			 *
 			 * In theory the dictionary combined with the compressed raw data should be smaller than the original
 			 *
-			 * @todo - currently the dictionar is just not compressing enough
+			 * @todo - currently the dictionary is just not compressing enough
 			 * 	   but it's getting closer
 			 * */
 			
@@ -31,78 +34,6 @@
 			// run compression
 			compress()
 
-			/** 
-			 * gets the text data in this case from a website URL
-			 * @returns {Void}
-			 * */
-			function compress() {
-
-				fetch("scrape.php", 
-				{
-					mode:'no-cors',
-					method: 'POST',
-					headers: {
-					    "Content-type": "application/x-www-form-urlencoded; charset=UTF-8"
-					},
-					body: 'url=' + URLTARGET
-				})
-				.then(function(response) {
-					return response.text()
-				})
-				.then(function(text) {
-					thedata.raw = text
-					runcompress()
-				})
-
-			}
-			/** 
-			 * 
-			 * */
-			function runcompress() {
-				Dictionary.first(thedata.raw,function(re) {
-				
-					thedata = re;
-					//Dictionary.second(thedata.raw,function(re){
-						thedata = re;
-						Dictionary.compress(function(){
-							//Dictionary.third(thedata,function(re) {
-								//thedata = re;
-								console.log('The RAW data length: ',thedata.raw.length);
-								console.log('The COMPRESSED data length: ',thedata.compressed.length);
-								console.log('The length of the DICTIONARY: ',JSON.stringify(thedata.found).length);
-								
-								let out = {
-									a:thedata.compressed,
-									b:thedata.found
-								}
-								
-								buildOut(function(){
-									console.log('The final output length ( Data and Dictionary ): ',thedata.out.length);
-									console.log('All the data as a string: ',thedata.out);
-								});
-							//});
-						});
-					//});
-					
-				});
-			}
-			/** 
-			 * 
-			 * @param {Function}
-			 * */
-			function buildOut(callback) {
-				let out = thedata.compressed + DICTDELIM;
-				for(let key in thedata.found) {
-					if(thedata.found.hasOwnProperty(key)) {
-						out += key+DICTKEYVALDELIM+thedata.found[key]+DICTWORDDELIM;
-					}
-				}
-				thedata.out = out;
-				if(typeof callback === 'function')
-					callback();
-			}
-			
-			
 		</script>
 	</body>
 </html>
