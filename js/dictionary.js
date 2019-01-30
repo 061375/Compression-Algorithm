@@ -36,7 +36,7 @@ class Dictionary {
 			if(n != DICTNOLONGERLOOKING)
 				current = current + n;
 			if(current.length > 5) {
-				let ftest = Helpers.getIndicesOf(current,raw,true);
+				let ftest = Helpers.getIndicesOf(current,raw,true,false);
 				if(ftest.length > 1) {
 					//console.log('FTEST ',current);
 					looking = true;
@@ -85,7 +85,7 @@ class Dictionary {
 				compressed = compressed.replaceAll(key,'')
 			}
 		}
-		//console.log('compressed',compressed);
+//console.log('compressed',compressed);
 		if(typeof callback === 'function')
 			callback({
 				raw:reraw,
@@ -120,14 +120,14 @@ class Dictionary {
 				}
 			}
 		}
-		//console.log(thedata.keys);
+//console.log(thedata.keys);
 		// loop our initial dictionary
 		for(let key in keys) {
 			if(keys.hasOwnProperty(key)) {
 				// if there isn't more than one verison of this why compresss it
 				//if(thedata.keys[key] > 1) {
 					let t = Helpers.getIndicesOf(key,raw,true)
-					//console.log(key,' ',t);
+//console.log(key,' ',t);
 					if(t.length > 1)found[key] = t;
 				//}
 			}
@@ -197,7 +197,7 @@ class Dictionary {
 					let bten = false;
 
 					fktemp = Helpers.compressNumber(cloop,MAIN);
-				
+//console.log(key,' ',fktemp);
 					fk = fk + fktemp;
 					thedata.found[key][i] = fktemp;
 				}

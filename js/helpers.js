@@ -57,9 +57,21 @@ class Helpers {
 		for(let i=0; i<length;i++) 
 			re += DICTNOLONGERLOOKING;
 		
-		let _re = str.replace(new RegExp(Helpers.escapeRegExp(find.trim()), 'g'),re);
+		let _re = str.replace(new RegExp(Helpers.escapeRegExp(find), 'g'),re);
 
 		return _re;
+	}
+	/** 
+	 * 
+	 * @param {String}
+	 * @returns {String}
+	 * */
+	static injectDelimitter(s) {
+		s = s.replace(TENDELIM,MAIN+TENDELIM)
+		s = s.replace(HUNDREDDELIM,MAIN+HUNDREDDELIM)
+		s = s.replace(THOUSANDDELIM,MAIN+THOUSANDDELIM)
+		console.log('SSSSS',s);
+		return s
 	}
 	/** 
 	 * finds multiple instances of a string within a string and adds the result to an array
@@ -70,6 +82,7 @@ class Helpers {
 	 * @returns {Array}
 	 * */
 	static getIndicesOf(searchStr, str, caseSensitive) {
+
 	    var searchStrLen = searchStr.length;
 	    if (searchStrLen == 0) {
 	        return [];

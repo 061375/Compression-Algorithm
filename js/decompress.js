@@ -8,7 +8,10 @@ function decompress(file) {
             //console.log(d);
             Decompress.extractDictionary(d,(d) => {
                 console.log(d);
-                Decompress.rebuildText(d,c)
+                Decompress.orderDictionary(d,(d) =>{
+                    console.log(d);
+                    Decompress.rebuildText(d,c)
+                })
             })
         })
     })
@@ -53,7 +56,8 @@ class Decompress {
         for(let i=0; i<d.length; i++) {
             // split key from location data
             if(d[i].indexOf(DICTKEYVALDELIM) > -1) {
-                let w = d[i].split(DICTKEYVALDELIM)
+
+                let w = Helpers.injectDelimitter(d[i]).split(DICTKEYVALDELIM)
                 // get individual position data
                 // remove any empties
                 let p = Helpers.removeFromArray(w[1].split(MAIN),"")
@@ -99,6 +103,23 @@ class Decompress {
 
     }
     /** 
+     * The dictionary needs to be ordered from least to greatest
+     *
+     * */
+    static orderDictionary(dict,callback) {
+        let re = {}
+        for(let key in dict) {
+            if(dict.hasOwnProperty(key)) {
+                for(let i=0; i<dict[key].length; i++) {
+                    re[dict[key][i]] = key
+                }
+            }
+        }
+        if(typeof callback === 'function') 
+            callback(re)
+        return re
+    }
+    /** 
      * 
      * @param {String}
      * @returns {Number}
@@ -134,11 +155,17 @@ class Decompress {
      * @returns {String}
      * */
     static rebuildText(dict,data) {
+        /*
         for(let key in dict) {
             if(dict.hasOwnProperty(key)) {
                 for(let i=0; i<dict[key].length; i++) {
                     data = Helpers.insertString(data,key,dict[key][i])
                 }
+            }
+        }*/
+        for(let key in dict) {
+            if(dict.hasOwnProperty(key)) {
+                data = Helpers.insertString(data,dict[key],key)
             }
         }
         console.log(data);
