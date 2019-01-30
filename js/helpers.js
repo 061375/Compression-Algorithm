@@ -99,8 +99,38 @@ class Helpers {
 	static isInteger(n) {
 		return n === +n && n === (n|0);
 	}
+	/** 
+	 * 
+	 * @param {String}
+	 * @returns {String}
+	 * */
 	static escapeRegExp(str) {
 		return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+	}
+	/** 
+	 * 
+	 * @param {String}
+	 * @param {String}
+	 * @param {Number}
+	 * @returns {String}
+	 * */
+	static insertString(a,b,pos) {
+		return [a.slice(0, pos), b, a.slice(pos)].join('')
+	}
+	/** 
+	 * 
+	 * @param {Array}
+	 * @param {String}
+	 * @returns {Array}
+	 * */
+	static removeFromArray(array,el) {
+		for (let i=array.length-1; i>=0; i--) {
+		    if (array[i] === el) {
+		        array.splice(i, 1)
+		        // break;       //<-- Uncomment  if only the first term has to be removed
+		    }
+		}
+		return array
 	}
 }
 

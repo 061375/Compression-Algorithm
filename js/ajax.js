@@ -12,7 +12,7 @@ function getDecompressed(file) {
  * */
 function getCompressed(file) {
     return Ajax('/php/read.php',{
-        url:file
+        file:file
     })
 }
 /** 

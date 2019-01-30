@@ -1,3 +1,6 @@
+			
+			const SHOWLOG = true;
+			const SHOWDELIM = true;
 
 			const URLTARGET = 'medium.txt';
 			
@@ -152,6 +155,8 @@
 				"98":s10,
 				"99":s11
 			};
+			// leave empty (this will be reveresed if necessary in code)
+			var REVERSECYPHER = {};
 
 			// @var {Object}
 			var thedata = {
