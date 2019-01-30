@@ -49,6 +49,7 @@ class Dictionary {
 					
 					raw = Helpers.notLooking(raw,current,current.length);
 					//console.log('"'+current+'"',raw,holdftest);
+					if(current=='nteger ')console.log('########################### got here',holdftest);
 					
 
 

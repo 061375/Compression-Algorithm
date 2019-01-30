@@ -7,7 +7,7 @@
 			
 			
 			// declare some UTF-16 characters
-			// JSON uses the UNICODE-16 character set
+
 			const s1 = '\u00E9';
 			const s2 = '\u00A1';
 			const s3 = '\u00A2';
@@ -39,11 +39,13 @@
 			const s29 = '\u00C7';
 			const s30 = '\u00C8';
 			const s31 = '\u00C9';
+			const s32 = '\u00CA';
+			const s33 = '\u00CB';
 
 			// delimmiters for various
 			const SQUAREDELIM = "#";
 			const MAIN = '|';
-			const TENDELIM = s22;// the delimitter denoting that the following number is the square of its value
+			const TENDELIM = s22;
 			const HUNDREDDELIM = s23;
 			const THOUSANDDELIM = s24;
 			const DICTDELIM = s25;
@@ -121,14 +123,14 @@
 				"64":"$",
 				"65":"%",
 				"66":"'",
-				"67":"&",
+				"67":s32,
 				"68":"*",
 				"69":"(",
 				"70":")",
 				"71":"-",
 				"72":"_",
 				"73":"=",
-				"74":"+",
+				"74":s33,
 				"75":"[",
 				"76":"{",
 				"77":"]",
@@ -155,6 +157,7 @@
 				"98":s10,
 				"99":s11
 			};
+
 			// leave empty (this will be reveresed if necessary in code)
 			var REVERSECYPHER = {};
 

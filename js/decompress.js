@@ -143,7 +143,7 @@ class Decompress {
      * */
     static getNumberFromCypher(s) {
         if(undefined !== REVERSECYPHER[s]) {
-            return parseInt(REVERSECYPHER[s])
+            return REVERSECYPHER[s]
         }else{
             return s
         }
