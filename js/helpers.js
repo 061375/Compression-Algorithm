@@ -67,10 +67,11 @@ class Helpers {
 	 * @returns {String}
 	 * */
 	static injectDelimitter(s) {
-		s = s.replace(TENDELIM,MAIN+TENDELIM)
-		s = s.replace(HUNDREDDELIM,MAIN+HUNDREDDELIM)
-		s = s.replace(THOUSANDDELIM,MAIN+THOUSANDDELIM)
-		console.log('SSSSS',s);
+		s = s.replaceAll(SQUAREDELIM,MAIN+SQUAREDELIM)
+		s = s.replaceAll(TENDELIM,MAIN+TENDELIM)
+		s = s.replaceAll(HUNDREDDELIM,MAIN+HUNDREDDELIM)
+		s = s.replaceAll(THOUSANDDELIM,MAIN+THOUSANDDELIM)
+		//console.log('SSSSS',s);
 		return s
 	}
 	/** 
