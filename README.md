@@ -22,6 +22,10 @@ Currently the stucture is a bit of a mess but I have it so that in the index.htm
 
 The result post compression is saved locally with the extension .c.txt.
 
+### Version 2.1.2 ###
+
+Bugfix - The tests now succeed 100% for text2.c.txt but I am still seeing errors in text.c.txt. I wasn't really looking for any in that one as it's all Lorem Ipsum and .. I don't speak latin but, there are at least one or two errors I need to find and fix.
+
 ### Version 2.1.1 ###
 
 The test against small.c.txt and medium.c.txt are fully successful however, the test against test2.c.txt is failing near the end at column 697. Obviously, everything after that is broken. But, this is just about 75% correct.
