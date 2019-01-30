@@ -22,6 +22,11 @@ Currently the stucture is a bit of a mess but I have it so that in the index.htm
 
 The result post compression is saved locally with the extension .c.txt.
 
+### Version 2.2.3 ###
+
+Bugfix - Discovered that some of the characters I used were breaking when being passed to the server... I should re-engineer this in Python ( soon enough ). Anyways, I picked some different characters and now the program works with text.c.txt for decompression. In most cases the file is only compressing by about 1%. I'll optimize it once I get the bugs out.
+The next step will be to decompress my homepage.
+
 ### Version 2.1.2 ###
 
 Bugfix - The tests now succeed 100% for text2.c.txt but I am still seeing errors in text.c.txt. I wasn't really looking for any in that one as it's all Lorem Ipsum and .. I don't speak latin but, there are at least one or two errors I need to find and fix.
