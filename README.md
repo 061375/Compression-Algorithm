@@ -51,6 +51,9 @@ This way I don't have large chunks of text repeated in an object.
 
 ## TODO ##
 
+* Build an interface to display and run the compression
+* Reorgnize the code into a better stuctured library.
+
 Some ideas I have for further compression.
 
 * Within the compressed data converting characters to numbers then dividing the number ( if possible ) and then adding a marker.
