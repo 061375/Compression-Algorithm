@@ -41,6 +41,8 @@
 			const s31 = '\u00C9';
 			const s32 = '\u00CA';
 			const s33 = '\u00CB';
+			const s34 = '\u00CC';
+			const s35 = '\u00CD';
 
 			// delimmiters for various
 			const SQUAREDELIM = "#";

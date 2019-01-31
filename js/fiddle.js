@@ -21,3 +21,9 @@ function aToNtoC() {
 	}
 	
 }
+
+console.log('FIDDLE: Playing with further compression by finding divisors of char codes');
+let check = 'jeremy'
+console.log(check);
+console.log('Char Codes divisible by 9: ',Helpers.convertStringToNumber(check,Helpers.divNine))
+console.log('Char Codes divisible by 3: ',Helpers.convertStringToNumber(check,Helpers.divThree))

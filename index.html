@@ -13,7 +13,7 @@
 		<script>
 			/** 
 			 * Simple compression algorithm 
-			 * @version 2.1.3
+			 * @version 2.1.3a
 			 *
 			 * this script loops through text looking for duplicate content
 			 * The program notes the position of the start of the duplicate
@@ -25,13 +25,12 @@
 			 *
 			 * In theory the dictionary combined with the compressed raw data should be smaller than the original
 			 *
-			 * @todo - currently the dictionary is just not compressing enough
-			 * 	   but it's getting closer
 			 * */
 			
 			//
 			
 			if(SHOWDELIM) {
+				console.log(' ');
 				console.log('SQUAREDELIM ',SQUAREDELIM);
 			 	console.log('MAIN ',MAIN);
 				console.log('TENDELIM ',TENDELIM);

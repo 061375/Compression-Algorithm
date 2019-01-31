@@ -146,6 +146,54 @@ class Helpers {
 		}
 		return array
 	}
+	/**
+	 * converts a string into a number
+	 * @param {String}
+	 * @param {Function}
+	 * @returns {Number}
+	 * */
+	static convertStringToNumber(s, f) {
+		let n = ''
+		for(let i=0; i<s.toString().length; i++) 
+			n = n + s.toString().charCodeAt(i)
+		if(typeof f == 'function') {
+			return f(parseInt(n))
+		}else{
+			return n
+		}
+	}
+	// ----- DIVISORS
+	
+	/**
+	 *
+	 * @param {Number}
+	 * @returns {String}
+	 * */
+	static divNine(n,d) {
+		let re = [], csum = 0;
+		for(let i=0; i<n.toString().length; i++) 
+			re.push(n.toString().substring(i,i+1))
+		for(let i=0; i<re.length; i++)
+			csum += parseInt(re[i])
+		if (Helpers.isInteger(csum/9))
+			return s34 + (csum/9)
+		return false
+	}
+	/**
+	 *
+	 * @param {Number}
+	 * @returns {String}
+	 * */
+	static divThree(n,d) {
+		let re = [], csum = 0;
+		for(let i=0; i<n.toString().length; i++) 
+			re.push(n.toString().substring(i,i+1))
+		for(let i=0; i<re.length; i++)
+			csum += parseInt(re[i])
+		if (Helpers.isInteger(csum/3))
+			return s35 + (csum/3)
+		return false
+	}
 }
 
 /**
