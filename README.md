@@ -48,3 +48,10 @@ I think I need to loop the data from top to bottom for this to work correctly.
 I also want to build a secondary index to hold the compressed text and reference it in the final loop.
 
 This way I don't have large chunks of text repeated in an object.
+
+## TODO ##
+
+Some ideas I have for further compression.
+
+* Within the compressed data converting characters to numbers then dividing the number ( if possible ) and then adding a marker.
+  In some cases this could shrink the data by half and it wouldn't require a dictionary. 
