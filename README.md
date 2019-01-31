@@ -53,6 +53,7 @@ This way I don't have large chunks of text repeated in an object.
 
 * Build an interface to display and run the compression
 * Reorgnize the code into a better stuctured library.
+* Rewrite in Python
 
 Some ideas I have for further compression.
 
